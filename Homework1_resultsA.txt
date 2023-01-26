@@ -1,0 +1,49 @@
+Q1. 	docker build --help
+
+Q2. 	docker exec -it [container_name] bash
+	pip list
+	
+Q3. 
+	select count(1) from green_taxi_data 
+	where lpep_pickup_datetime >= '2019-01-15' and lpep_pickup_datetime < '2019-01-16'
+
+	--Alternative: 
+	select count(1) from green_taxi_data 
+	where date(lpep_pickup_datetime)='2019-01-01'
+
+Q4. 
+	select lpep_pickup_datetime, trip_distance from green_taxi_data 
+	where lpep_pickup_datetime >= '2019-01-15' and lpep_pickup_datetime < '2019-01-16' 
+	order by trip_distance DESC 
+	limit 10
+
+	-- Technically you would only need to do limit 1, but I wanted to confirm the values I was getting made sense against each other
+
+Q5. 	
+	--2 passengers: 
+	select count(1) from green_taxi_data where passenger_count = 2 and date(lpep_pickup_datetime)='2019-01-01'
+	--3 passengers: 
+	select count(1) from green_taxi_data where passenger_count = 3 and date(lpep_pickup_datetime)='2019-01-01'
+
+Q6. 
+
+	--First we join the 2 tables to find which pickups happened in Astoria and order by the tip amount to find the one with the highest tip (could have also used MAX()))
+		select green_taxi_data."PULocationID", green_taxi_data."DOLocationID", green_taxi_data.ti
+		p_amount, taxi_zones."Zone" from green_taxi_data inner join taxi_zones on green_taxi_data."PULocationID" = taxi_zones.
+		"LocationID" and taxi_zones."Zone" like 'Astoria%' order by tip_amount desc limit 10
+
+	--Then we take the value of the DOLocationID from the top result and paste it in the LocationID below for the taxi_zones table 
+		select "Zone" from taxi_zones where "LocationID" = 146
+
+	--Alternative with one shot query (after help from user Shalltear)
+
+		select gtd.tip_amount as "Max Tip", tzdo."Zone" as "Dropoff Zone"
+		from green_taxi_data as gtd
+		inner join taxi_zones as tzpu
+			on gtd."PULocationID" = tzpu."LocationID"
+		inner join taxi_zones as tzdo
+			on gtd."DOLocationID" = tzdo."LocationID"
+		where tzpu."Zone" like 'Astoria%'
+		group by gtd.tip_amount, tzdo."Zone"
+		order by "Max Tip" desc
+		limit 1
