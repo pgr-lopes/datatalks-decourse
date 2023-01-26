@@ -15,5 +15,7 @@ Technically you would only need to do limit 1, but I wanted to confirm the value
 6. 
 
 select green_taxi_data."PULocationID", green_taxi_data."DOLocationID", green_taxi_data.ti
- p_amount, taxi_zones."Zone" from green_taxi_data inner join taxi_zones on green_taxi_data."PULocationID" = taxi_zones.
- "LocationID" and taxi_zones."Zone" like 'Astoria%' order by tip_amount desc limit 10
+p_amount, taxi_zones."Zone" from green_taxi_data inner join taxi_zones on green_taxi_data."PULocationID" = taxi_zones.
+"LocationID" and taxi_zones."Zone" like 'Astoria%' order by tip_amount desc limit 10
+ 
+select "Zone" from taxi_zones where "LocationID" = 146
