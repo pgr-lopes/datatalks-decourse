@@ -41,6 +41,7 @@ def etl_web_to_gcs_green(year: int, month: int, color: str) -> None:
 
     df = fetch(dataset_url)
     path = write_local(df, color, dataset_file)
+    print(f"rows: {len(df)}")
     write_gcs(path, color, dataset_file)
 
 
