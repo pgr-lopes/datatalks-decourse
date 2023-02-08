@@ -35,7 +35,7 @@ def write_gcs(path: Path, color: str, dataset_file: str) -> None:
     return
 
 
-@flow(log_prints=True)
+@flow()
 def etl_web_to_gcs_green(year: int, month: int, color: str) -> None:
     """The main ETL function"""
     dataset_file = f"{color}_tripdata_{year}-{month:02}"
@@ -48,7 +48,7 @@ def etl_web_to_gcs_green(year: int, month: int, color: str) -> None:
 
 
 @flow(log_prints=True)
-def github_flow_green(
+def notification_flow_green(
     months: list[int], year: int, color: str):
     for month in months:
         etl_web_to_gcs_green(year, month, color)
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     color = "green"
     months = [11]
     year = 2020
-    github_flow_green(months, year, color)
+    notification_flow_green(months, year, color)

@@ -7,26 +7,24 @@ from prefect.tasks import task_input_hash
 from datetime import timedelta
 
 
-@task(log_prints=True, retries=3, cache_key_fn=task_input_hash, cache_expiration=timedelta(days=1))
+@task(retries=3, cache_key_fn=task_input_hash, cache_expiration=timedelta(days=1))
 def fetch(dataset_url: str) -> pd.DataFrame:
     """Read taxi data from web into pandas DataFrame"""
     # if randint(0, 1) > 0:
     #     raise Exception
     df = pd.read_csv(dataset_url)
-    print(f"rows: {len(df)}")
     return df
 
 
-@task(log_prints=True)
+@task()
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
     """Write DataFrame out locally as parquet file"""
     path = Path(f"C:/Users/pelope/OneDrive - Microsoft/Desktop/Projects/Datatalks DE camp/Week2/data/{color}/{dataset_file}.parquet")
     df.to_parquet(path, compression="gzip")
-    print(f"rows: {len(df)}")
     return path
 
 
-@task(log_prints=True)
+@task()
 def write_gcs(path: Path, color: str, dataset_file: str) -> None:
     """Upload local parquet file to GCS"""
     gcs_block = GcsBucket.load("zoom-gcs")
@@ -35,27 +33,26 @@ def write_gcs(path: Path, color: str, dataset_file: str) -> None:
     return
 
 
-@flow(log_prints=True)
-def etl_web_to_gcs_green(year: int, month: int, color: str) -> None:
+@flow()
+def etl_web_to_gcs(year: int, month: int, color: str) -> None:
     """The main ETL function"""
     dataset_file = f"{color}_tripdata_{year}-{month:02}"
     dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{color}/{dataset_file}.csv.gz"
 
     df = fetch(dataset_url)
     path = write_local(df, color, dataset_file)
-    print(f"rows: {len(df)}")
     write_gcs(path, color, dataset_file)
 
 
-@flow(log_prints=True)
-def github_flow_green(
+@flow()
+def etl_parent_flow(
     months: list[int], year: int, color: str):
     for month in months:
-        etl_web_to_gcs_green(year, month, color)
+        etl_web_to_gcs(year, month, color)
 
 
 if __name__ == "__main__":
-    color = "green"
-    months = [11]
-    year = 2020
-    github_flow_green(months, year, color)
+    color = "yellow"
+    months = [2, 3]
+    year = 2019
+    etl_parent_flow(months, year, color)

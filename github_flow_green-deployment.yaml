@@ -1,0 +1,62 @@
+###
+### A complete description of a Prefect Deployment for flow 'github-flow-green'
+###
+name: Github Flow
+description: null
+version: 63ce128ee10f5a037e1bfa487cc5a80d
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {"color": "green", "months": [11], "year": 2020}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: github-flow-green
+manifest_path: null
+storage:
+  repository: https://github.com/pgr-lopes/datatalks-decourse.git
+  reference: null
+  access_token: null
+  _block_document_id: 8219e08c-d93e-452a-ab69-3f46c070c41e
+  _block_document_name: zoom-git
+  _is_anonymous: false
+  block_type_slug: github
+  _block_type_slug: github
+path: ''
+entrypoint: Q4etl_web_to_gcs_github.py:github_flow_green
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    months:
+      title: months
+      position: 0
+      type: array
+      items:
+        type: integer
+    year:
+      title: year
+      position: 1
+      type: integer
+    color:
+      title: color
+      position: 2
+      type: string
+  required:
+  - months
+  - year
+  - color
+  definitions: null

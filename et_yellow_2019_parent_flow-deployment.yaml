@@ -1,0 +1,54 @@
+###
+### A complete description of a Prefect Deployment for flow 'et-yellow-2019-parent-flow'
+###
+name: 2019 Yellow Parametrized Flow
+description: null
+version: e10961b0731a95fb644acabe3cebf991
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {"color": "yellow", "months": [2, 3], "year": 2019}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: et-yellow-2019-parent-flow
+manifest_path: null
+storage: null
+path: C:\Users\pelope\OneDrive - Microsoft\Desktop\Projects\Datatalks DE camp\Week2
+entrypoint: Q2ET_to_bq_2019_yellow.py:et_yellow_2019_parent_flow
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    months:
+      title: months
+      position: 0
+      type: array
+      items:
+        type: integer
+    year:
+      title: year
+      position: 1
+      type: integer
+    color:
+      title: color
+      position: 2
+      type: string
+  required:
+  - months
+  - year
+  - color
+  definitions: null
