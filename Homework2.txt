@@ -1,0 +1,47 @@
+Q1. Check Q1etl_web_to_gcs_green.py file. Answer was taken from the print inside the transform function where we print the length of the dataframe, giving us the total rows.
+
+Q2. 
+
+	prefect deployment build ./etl_web_to_gcs.py:etl_web_to_gcs -n "2021 web to gcs yellow data flow"
+	prefect deployment apply etl_web_to_gcs-deployment.yaml
+
+
+Q3. Check Q2_web_to_gcs_2019_yellow.py and Q2ET_to_bq_2019_yellow.py (apologies for the wrong Q number in the file, that's a typo). web_to_gcs file was used to load the parquet files into the google storage acccount and the ET_to_bq was used with sub_flows to create a deployment with the multiple files for the 2019 year.
+
+For the prefect deployment:
+
+	cmd: prefect deployment build ./Q2_web_to_gcs_2019_yellow.py:et_yellow_2019_parent_flow -n "2019 Yellow Parametrized Flow"
+	cmd: prefect deployment apply et_yellow_2019_parent_flow-deployment.yaml
+
+The row count was added in the write_bq task on the Q2ET... file
+
+Q4. Change the code and upload the flow file to the github workspace (file named: Q4etl_web_to_gcs_github.py). Then create the Github Block through the Prefect UI (using Orion locally) and pass that block name in the initial cmd command:
+
+	prefect deployment build Q4etl_web_to_gcs_github.py:github_flow_green -n "GitHub Storage Flow" -sb github/zoom-git -n "Github Flow"
+
+Modify the yaml file to include the parameters, then run in cmd
+	
+	prefect deployment apply github_flow_green-deployment.yaml
+
+Start agent
+
+	prefect agent start --work-queue "default"
+
+Run flow from UI
+
+Q5. Modified original file and created Q5etl_notification.py to take the data. Created account in app.prefect.cloud and, in conda environment:
+
+	prefect cloud login
+	prefect deployment build ./Q5etl_notification.py:notification_flow_green -n "Notification Flow"
+
+Filled the yaml file with the correct parameters for the correct data.
+
+	prefect deployment apply notification_flow_green-deployment.yaml
+	prefect agent start --work-queue "default"
+
+Created the necessary blocks (GCS storage and GCS credentials) and ran the flow from the UI of prefect cloud
+
+Q6. In prefect cloud (or local orion), go to the Blocks blade, search for "Secret", create a new secret with 10 characters. When the code block shows up, underneath you have the masked value and see 8 asterisks
+
+
+	
