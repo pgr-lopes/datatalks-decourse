@@ -7,3 +7,5 @@ Structure:
 The solutions will be uploaded in the form of .txt files for the most part, unless there is a specific file type that can be shared directly for an exercise. Multiple files will be uploaded with a similar nomenclature structure to identify the Homework number and section:
 
 HomeworkX_resultsXX.txt
+
+All code files will be inside the folders with the respective name (HomeworkX)
