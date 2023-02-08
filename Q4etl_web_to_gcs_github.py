@@ -17,7 +17,7 @@ def fetch(dataset_url: str) -> pd.DataFrame:
     return df
 
 
-@task()
+@task(log_prints=True)
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
     """Write DataFrame out locally as parquet file"""
     path = Path(f"C:/Users/pelope/OneDrive - Microsoft/Desktop/Projects/Datatalks DE camp/Week2/data/{color}/{dataset_file}.parquet")
@@ -26,7 +26,7 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
     return path
 
 
-@task()
+@task(log_prints=True)
 def write_gcs(path: Path, color: str, dataset_file: str) -> None:
     """Upload local parquet file to GCS"""
     gcs_block = GcsBucket.load("zoom-gcs")
@@ -35,7 +35,7 @@ def write_gcs(path: Path, color: str, dataset_file: str) -> None:
     return
 
 
-@flow()
+@flow(log_prints=True)
 def etl_web_to_gcs_green(year: int, month: int, color: str) -> None:
     """The main ETL function"""
     dataset_file = f"{color}_tripdata_{year}-{month:02}"
