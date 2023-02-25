@@ -1,0 +1,2 @@
+For all questions, the code is inside the DBT folder which was used to serve as the repo in the dbt cloud project.
+Inside HW4 folder are the SQL scripts used for Q1, Q3 and Q4 and the PDF format reports used to answer Q2 and Q5
