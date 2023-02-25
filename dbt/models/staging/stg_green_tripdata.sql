@@ -1,12 +1,12 @@
 {{ config(materialized='view') }}
 
-with tripdata as 
+/*with tripdata as 
 (
   select *,
     row_number() over(partition by vendorid, lpep_pickup_datetime) as rn
   from {{ source('staging','green_trips') }}
   where vendorid is not null 
-)
+)*/
 
 select
 -- Identifiers
@@ -40,7 +40,7 @@ select
     cast(congestion_surcharge as numeric) as congestion_surcharge
 
 from tripdata
-where rn = 1
+--where rn = 1
 
 -- dbt build --m <model.sql> --var 'is_test_run: false'
 {% if var('is_test_run', default=true) %}
