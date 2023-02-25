@@ -7,6 +7,7 @@ sources:
     tables:
     - name: yellow_trips
     - name: green_trips
+    - name: fhv_tripdata_parquet
 
 models:
     - name: stg_green_tripdata
@@ -191,3 +192,4 @@ models:
             description: Total amount of all tolls paid in trip.
           - name: Total_amount 
             description: The total amount charged to passengers. Does not include cash tips.
+    - name: stg_fhv_tripdata
